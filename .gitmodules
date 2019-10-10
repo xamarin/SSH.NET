@@ -1,0 +1,5 @@
+[submodule "external/Cryptography"]
+	path = external/Cryptography
+	url = git@github.com:sshnet/Cryptography.git
+	ignore = dirty
+    branch = legacy
