@@ -9,8 +9,7 @@ namespace Renci.SshNet.Common
     /// </summary>
     public class HostKeyEventArgs : EventArgs
     {
-        byte[] fingerPrintMD5;
-        byte[] fingerPrintSHA256;
+        byte[] fingerPrint;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HostKeyEventArgs"/> class.
@@ -46,40 +45,28 @@ namespace Renci.SshNet.Common
         public string HostKeyName{ get; private set; }
 
         /// <summary>
-        /// Gets the MD5 finger print.
+        /// Gets the finger print.
         /// </summary>
         public byte[] FingerPrint
         {
             get
             {
-                if (fingerPrintMD5 == null)
+                if (fingerPrint == null)
                 {
-                    using (var md5 = CryptoAbstraction.CreateMD5())
-                    {
-                        fingerPrintMD5 = md5.ComputeHash(HostKey);
-                    }
-                }
-
-                return fingerPrintMD5;
-            }
-        }
-
-        /// <summary>
-        /// Gets the SHA256 finger print.
-        /// </summary>
-        public byte[] FingerPrintSHA256
-        {
-            get
-            {
-                if (fingerPrintSHA256 == null)
-                {
+#if FEATURE_FIPS
                     using (var sha = CryptoAbstraction.CreateSHA256())
                     {
-                        fingerPrintSHA256 = sha.ComputeHash(HostKey);
+                        fingerPrint = sha.ComputeHash(HostKey);
                     }
+#else
+                    using (var md5 = CryptoAbstraction.CreateMD5())
+                    {
+                        fingerPrint = md5.ComputeHash(HostKey);
+                    }
+#endif
                 }
 
-                return fingerPrintSHA256;
+                return fingerPrint;
             }
         }
 
