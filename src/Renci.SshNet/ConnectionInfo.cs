@@ -294,10 +294,12 @@ namespace Renci.SshNet
         {
             if (host == null)
                 throw new ArgumentNullException("host");
+
             port.ValidatePort("port");
 
             if (username == null)
                 throw new ArgumentNullException("username");
+
             if (username.All(char.IsWhiteSpace))
                 throw new ArgumentException("Cannot be empty or contain only whitespace.", "username");
 
@@ -305,11 +307,13 @@ namespace Renci.SshNet
             {
                 if (proxyHost == null)
                     throw new ArgumentNullException("proxyHost");
+
                 proxyPort.ValidatePort("proxyPort");
             }
 
             if (authenticationMethods == null)
                 throw new ArgumentNullException("authenticationMethods");
+
             if (authenticationMethods.Length == 0)
                 throw new ArgumentException("At least one authentication method should be specified.", "authenticationMethods");
 
@@ -321,96 +325,100 @@ namespace Renci.SshNet
             Encoding = Encoding.UTF8;
 
             KeyExchangeAlgorithms = new Dictionary<string, Type>
-                {
-                    {"diffie-hellman-group-exchange-sha256", typeof (KeyExchangeDiffieHellmanGroupExchangeSha256)},
-                    {"diffie-hellman-group-exchange-sha1", typeof (KeyExchangeDiffieHellmanGroupExchangeSha1)},
-                    {"diffie-hellman-group14-sha1", typeof (KeyExchangeDiffieHellmanGroup14Sha1)},
-                    {"diffie-hellman-group1-sha1", typeof (KeyExchangeDiffieHellmanGroup1Sha1)},
-                    //{"ecdh-sha2-nistp256", typeof(KeyExchangeEllipticCurveDiffieHellman)},
-                    //{"ecdh-sha2-nistp256", typeof(...)},
-                    //{"ecdh-sha2-nistp384", typeof(...)},
-                    //{"ecdh-sha2-nistp521", typeof(...)},
-                    //"gss-group1-sha1-toWM5Slw5Ew8Mqkay+al2g==" - WinSSHD
-                    //"gss-gex-sha1-toWM5Slw5Ew8Mqkay+al2g==" - WinSSHD
-                };
+            {
+                {"diffie-hellman-group-exchange-sha256", typeof (KeyExchangeDiffieHellmanGroupExchangeSha256)},
+                {"diffie-hellman-group-exchange-sha1", typeof (KeyExchangeDiffieHellmanGroupExchangeSha1)},
+                {"diffie-hellman-group14-sha1", typeof (KeyExchangeDiffieHellmanGroup14Sha1)},
+                {"diffie-hellman-group1-sha1", typeof (KeyExchangeDiffieHellmanGroup1Sha1)},
+                //{"ecdh-sha2-nistp256", typeof(KeyExchangeEllipticCurveDiffieHellman)},
+                //{"ecdh-sha2-nistp256", typeof(...)},
+                //{"ecdh-sha2-nistp384", typeof(...)},
+                //{"ecdh-sha2-nistp521", typeof(...)},
+                //"gss-group1-sha1-toWM5Slw5Ew8Mqkay+al2g==" - WinSSHD
+                //"gss-gex-sha1-toWM5Slw5Ew8Mqkay+al2g==" - WinSSHD
+            };
 
             Encryptions = new Dictionary<string, CipherInfo>
-                {
-                    {"aes256-ctr", new CipherInfo(256, (key, iv) => new AesCipher(key, new CtrCipherMode(iv), null))},
-                    {"3des-cbc", new CipherInfo(192, (key, iv) => new TripleDesCipher(key, new CbcCipherMode(iv), null))},
-                    {"aes128-cbc", new CipherInfo(128, (key, iv) => new AesCipher(key, new CbcCipherMode(iv), null))},
-                    {"aes192-cbc", new CipherInfo(192, (key, iv) => new AesCipher(key, new CbcCipherMode(iv), null))},
-                    {"aes256-cbc", new CipherInfo(256, (key, iv) => new AesCipher(key, new CbcCipherMode(iv), null))},
-                    {"blowfish-cbc", new CipherInfo(128, (key, iv) => new BlowfishCipher(key, new CbcCipherMode(iv), null))},
-                    {"twofish-cbc", new CipherInfo(256, (key, iv) => new TwofishCipher(key, new CbcCipherMode(iv), null))},
-                    {"twofish192-cbc", new CipherInfo(192, (key, iv) => new TwofishCipher(key, new CbcCipherMode(iv), null))},
-                    {"twofish128-cbc", new CipherInfo(128, (key, iv) => new TwofishCipher(key, new CbcCipherMode(iv), null))},
-                    {"twofish256-cbc", new CipherInfo(256, (key, iv) => new TwofishCipher(key, new CbcCipherMode(iv), null))},
-                    ////{"serpent256-cbc", typeof(CipherSerpent256CBC)},
-                    ////{"serpent192-cbc", typeof(...)},
-                    ////{"serpent128-cbc", typeof(...)},
-                    {"arcfour", new CipherInfo(128, (key, iv) => new Arc4Cipher(key, false))},
-                    {"arcfour128", new CipherInfo(128, (key, iv) => new Arc4Cipher(key, true))},
-                    {"arcfour256", new CipherInfo(256, (key, iv) => new Arc4Cipher(key, true))},
-                    ////{"idea-cbc", typeof(...)},
-                    {"cast128-cbc", new CipherInfo(128, (key, iv) => new CastCipher(key, new CbcCipherMode(iv), null))},
-                    ////{"rijndael-cbc@lysator.liu.se", typeof(...)},                
-                    {"aes128-ctr", new CipherInfo(128, (key, iv) => new AesCipher(key, new CtrCipherMode(iv), null))},
-                    {"aes192-ctr", new CipherInfo(192, (key, iv) => new AesCipher(key, new CtrCipherMode(iv), null))},
-                };
+            {
+                {"aes256-ctr", new CipherInfo(256, (key, iv) => new AesCipher(key, new CtrCipherMode(iv), null))},
+                {"aes256-cbc", new CipherInfo(256, (key, iv) => new AesCipher(key, new CbcCipherMode(iv), null))},
+                {"aes192-cbc", new CipherInfo(192, (key, iv) => new AesCipher(key, new CbcCipherMode(iv), null))},
+                {"aes128-cbc", new CipherInfo(128, (key, iv) => new AesCipher(key, new CbcCipherMode(iv), null))},
+                {"3des-cbc", new CipherInfo(192, (key, iv) => new TripleDesCipher(key, new CbcCipherMode(iv), null))},
+#if !FEATURE_FIPS
+                {"blowfish-cbc", new CipherInfo(128, (key, iv) => new BlowfishCipher(key, new CbcCipherMode(iv), null))},
+                {"twofish-cbc", new CipherInfo(256, (key, iv) => new TwofishCipher(key, new CbcCipherMode(iv), null))},
+                {"twofish192-cbc", new CipherInfo(192, (key, iv) => new TwofishCipher(key, new CbcCipherMode(iv), null))},
+                {"twofish128-cbc", new CipherInfo(128, (key, iv) => new TwofishCipher(key, new CbcCipherMode(iv), null))},
+                {"twofish256-cbc", new CipherInfo(256, (key, iv) => new TwofishCipher(key, new CbcCipherMode(iv), null))},
+                ////{"serpent256-cbc", typeof(CipherSerpent256CBC)},
+                ////{"serpent192-cbc", typeof(...)},
+                ////{"serpent128-cbc", typeof(...)},
+                {"arcfour", new CipherInfo(128, (key, iv) => new Arc4Cipher(key, false))},
+                {"arcfour128", new CipherInfo(128, (key, iv) => new Arc4Cipher(key, true))},
+                {"arcfour256", new CipherInfo(256, (key, iv) => new Arc4Cipher(key, true))},
+                ////{"idea-cbc", typeof(...)},
+                {"cast128-cbc", new CipherInfo(128, (key, iv) => new CastCipher(key, new CbcCipherMode(iv), null))},
+                ////{"rijndael-cbc@lysator.liu.se", typeof(...)},                
+                {"aes128-ctr", new CipherInfo(128, (key, iv) => new AesCipher(key, new CtrCipherMode(iv), null))},
+                {"aes192-ctr", new CipherInfo(192, (key, iv) => new AesCipher(key, new CtrCipherMode(iv), null))},
+#endif
+            };
 
             HmacAlgorithms = new Dictionary<string, HashInfo>
-                {
-                    {"hmac-md5", new HashInfo(16*8, CryptoAbstraction.CreateHMACMD5)},
-                    {"hmac-md5-96", new HashInfo(16*8, key => CryptoAbstraction.CreateHMACMD5(key, 96))},
-                    {"hmac-sha1", new HashInfo(20*8, CryptoAbstraction.CreateHMACSHA1)},
-                    {"hmac-sha1-96", new HashInfo(20*8, key => CryptoAbstraction.CreateHMACSHA1(key, 96))},
-                    {"hmac-sha2-256", new HashInfo(32*8, CryptoAbstraction.CreateHMACSHA256)},
-                    {"hmac-sha2-256-96", new HashInfo(32*8, key => CryptoAbstraction.CreateHMACSHA256(key, 96))},
-                    {"hmac-sha2-512", new HashInfo(64 * 8, CryptoAbstraction.CreateHMACSHA512)},
-                    {"hmac-sha2-512-96", new HashInfo(64 * 8,  key => CryptoAbstraction.CreateHMACSHA512(key, 96))},
-                    //{"umac-64@openssh.com", typeof(HMacSha1)},
-                    {"hmac-ripemd160", new HashInfo(160, CryptoAbstraction.CreateHMACRIPEMD160)},
-                    {"hmac-ripemd160@openssh.com", new HashInfo(160, CryptoAbstraction.CreateHMACRIPEMD160)},
-                    //{"none", typeof(...)},
-                };
+            {
+                {"hmac-sha2-256", new HashInfo(32*8, CryptoAbstraction.CreateHMACSHA256)},
+                {"hmac-sha2-512", new HashInfo(64 * 8, CryptoAbstraction.CreateHMACSHA512)},
+                {"hmac-sha1", new HashInfo(20*8, CryptoAbstraction.CreateHMACSHA1)},
+#if !FEATURE_FIPS
+                {"hmac-md5", new HashInfo(16*8, CryptoAbstraction.CreateHMACMD5)},
+                {"hmac-md5-96", new HashInfo(16*8, key => CryptoAbstraction.CreateHMACMD5(key, 96))},
+                {"hmac-sha1-96", new HashInfo(20*8, key => CryptoAbstraction.CreateHMACSHA1(key, 96))},
+                {"hmac-sha2-256-96", new HashInfo(32*8, key => CryptoAbstraction.CreateHMACSHA256(key, 96))},
+                {"hmac-sha2-512-96", new HashInfo(64 * 8,  key => CryptoAbstraction.CreateHMACSHA512(key, 96))},
+                //{"umac-64@openssh.com", typeof(HMacSha1)},
+                {"hmac-ripemd160", new HashInfo(160, CryptoAbstraction.CreateHMACRIPEMD160)},
+                {"hmac-ripemd160@openssh.com", new HashInfo(160, CryptoAbstraction.CreateHMACRIPEMD160)},
+                //{"none", typeof(...)},
+#endif
+            };
 
             HostKeyAlgorithms = new Dictionary<string, Func<byte[], KeyHostAlgorithm>>
-                {
-                    {"ssh-rsa", data => new KeyHostAlgorithm("ssh-rsa", new RsaKey(), data)},
-                    {"ssh-dss", data => new KeyHostAlgorithm("ssh-dss", new DsaKey(), data)},
-                    //{"ecdsa-sha2-nistp256 "}
-                    //{"x509v3-sign-rsa", () => { ... },
-                    //{"x509v3-sign-dss", () => { ... },
-                    //{"spki-sign-rsa", () => { ... },
-                    //{"spki-sign-dss", () => { ... },
-                    //{"pgp-sign-rsa", () => { ... },
-                    //{"pgp-sign-dss", () => { ... },
-                };
+            {
+                {"ssh-rsa", data => new KeyHostAlgorithm("ssh-rsa", new RsaKey(), data)},
+                {"ssh-dss", data => new KeyHostAlgorithm("ssh-dss", new DsaKey(), data)},
+                //{"ecdsa-sha2-nistp256 "}
+                //{"x509v3-sign-rsa", () => { ... },
+                //{"x509v3-sign-dss", () => { ... },
+                //{"spki-sign-rsa", () => { ... },
+                //{"spki-sign-dss", () => { ... },
+                //{"pgp-sign-rsa", () => { ... },
+                //{"pgp-sign-dss", () => { ... },
+            };
 
             CompressionAlgorithms = new Dictionary<string, Type>
-                {
-                    //{"zlib@openssh.com", typeof(ZlibOpenSsh)}, 
-                    //{"zlib", typeof(Zlib)}, 
-                    {"none", null},
-                };
+            {
+                //{"zlib@openssh.com", typeof(ZlibOpenSsh)}, 
+                //{"zlib", typeof(Zlib)}, 
+                {"none", null},
+            };
 
             ChannelRequests = new Dictionary<string, RequestInfo>
-                {
-                    {EnvironmentVariableRequestInfo.Name, new EnvironmentVariableRequestInfo()},
-                    {ExecRequestInfo.Name, new ExecRequestInfo()},
-                    {ExitSignalRequestInfo.Name, new ExitSignalRequestInfo()},
-                    {ExitStatusRequestInfo.Name, new ExitStatusRequestInfo()},
-                    {PseudoTerminalRequestInfo.Name, new PseudoTerminalRequestInfo()},
-                    {ShellRequestInfo.Name, new ShellRequestInfo()},
-                    {SignalRequestInfo.Name, new SignalRequestInfo()},
-                    {SubsystemRequestInfo.Name, new SubsystemRequestInfo()},
-                    {WindowChangeRequestInfo.Name, new WindowChangeRequestInfo()},
-                    {X11ForwardingRequestInfo.Name, new X11ForwardingRequestInfo()},
-                    {XonXoffRequestInfo.Name, new XonXoffRequestInfo()},
-                    {EndOfWriteRequestInfo.Name, new EndOfWriteRequestInfo()},
-                    {KeepAliveRequestInfo.Name, new KeepAliveRequestInfo()},
-                };
+            {
+                {EnvironmentVariableRequestInfo.Name, new EnvironmentVariableRequestInfo()},
+                {ExecRequestInfo.Name, new ExecRequestInfo()},
+                {ExitSignalRequestInfo.Name, new ExitSignalRequestInfo()},
+                {ExitStatusRequestInfo.Name, new ExitStatusRequestInfo()},
+                {PseudoTerminalRequestInfo.Name, new PseudoTerminalRequestInfo()},
+                {ShellRequestInfo.Name, new ShellRequestInfo()},
+                {SignalRequestInfo.Name, new SignalRequestInfo()},
+                {SubsystemRequestInfo.Name, new SubsystemRequestInfo()},
+                {WindowChangeRequestInfo.Name, new WindowChangeRequestInfo()},
+                {X11ForwardingRequestInfo.Name, new X11ForwardingRequestInfo()},
+                {XonXoffRequestInfo.Name, new XonXoffRequestInfo()},
+                {EndOfWriteRequestInfo.Name, new EndOfWriteRequestInfo()},
+                {KeepAliveRequestInfo.Name, new KeepAliveRequestInfo()},
+            };
 
             Host = host;
             Port = port;
