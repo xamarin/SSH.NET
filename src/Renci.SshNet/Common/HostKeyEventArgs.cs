@@ -1,6 +1,6 @@
-﻿using System;
-using Renci.SshNet.Abstractions;
+﻿using Renci.SshNet.Abstractions;
 using Renci.SshNet.Security;
+using System;
 
 namespace Renci.SshNet.Common
 {
@@ -9,6 +9,24 @@ namespace Renci.SshNet.Common
     /// </summary>
     public class HostKeyEventArgs : EventArgs
     {
+        byte[] fingerPrintMD5;
+        byte[] fingerPrintSHA256;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HostKeyEventArgs"/> class.
+        /// </summary>
+        /// <param name="host">The host.</param>
+        public HostKeyEventArgs(KeyHostAlgorithm host)
+        {
+            CanTrust = true;   //  Set default value
+
+            HostKey = host.Data;
+
+            HostKeyName = host.Name;
+
+            KeyLength = host.Key.KeyLength;
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether host key can be trusted.
         /// </summary>
@@ -28,9 +46,42 @@ namespace Renci.SshNet.Common
         public string HostKeyName{ get; private set; }
 
         /// <summary>
-        /// Gets the finger print.
+        /// Gets the MD5 finger print.
         /// </summary>
-        public byte[] FingerPrint { get; private set; }
+        public byte[] FingerPrint
+        {
+            get
+            {
+                if (fingerPrintMD5 == null)
+                {
+                    using (var md5 = CryptoAbstraction.CreateMD5())
+                    {
+                        fingerPrintMD5 = md5.ComputeHash(HostKey);
+                    }
+                }
+
+                return fingerPrintMD5;
+            }
+        }
+
+        /// <summary>
+        /// Gets the SHA256 finger print.
+        /// </summary>
+        public byte[] FingerPrintSHA256
+        {
+            get
+            {
+                if (fingerPrintSHA256 == null)
+                {
+                    using (var sha = CryptoAbstraction.CreateSHA256())
+                    {
+                        fingerPrintSHA256 = sha.ComputeHash(HostKey);
+                    }
+                }
+
+                return fingerPrintSHA256;
+            }
+        }
 
         /// <summary>
         /// Gets the length of the key in bits.
@@ -39,25 +90,5 @@ namespace Renci.SshNet.Common
         /// The length of the key in bits.
         /// </value>
         public int KeyLength { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HostKeyEventArgs"/> class.
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public HostKeyEventArgs(KeyHostAlgorithm host)
-        {
-            CanTrust = true;   //  Set default value
-
-            HostKey = host.Data;
-
-            HostKeyName = host.Name;
-
-            KeyLength = host.Key.KeyLength;
-
-            using (var md5 = CryptoAbstraction.CreateMD5())
-            {
-                FingerPrint = md5.ComputeHash(host.Data);
-            }
-        }
     }
 }
