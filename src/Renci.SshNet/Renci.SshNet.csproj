@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Renci.SshNet</RootNamespace>
     <AssemblyName>Renci.SshNet</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +25,7 @@
     <DocumentationFile>bin\Debug\Renci.SshNet.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>5</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -37,6 +39,7 @@
     </NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>5</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -468,6 +471,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentation\SshNet.shfbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\external\Cryptography\src\SshNet.Security.Cryptography.NET45\SshNet.Security.Cryptography.NET45.csproj">
+      <Project>{34efa5c7-4a8a-464b-b4c4-915b132483d6}</Project>
+      <Name>SshNet.Security.Cryptography.NET45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
