@@ -2,4 +2,4 @@
 	path = external/Cryptography
 	url = ../../xamarin/Cryptography.git
     ignore = dirty
-    branch = dev/mag/fips
+    branch = master
